@@ -16,5 +16,12 @@ namespace Reu_bux
         {
             InitializeComponent();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form MM = new MainMenu();
+            MM.Show();
+            this.Hide();
+        }
     }
 }

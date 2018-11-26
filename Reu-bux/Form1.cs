@@ -19,7 +19,28 @@ namespace Reu_bux
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Form RV = new RabVrem();
+            RV.Show();
+            this.Hide();
+        }
 
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form St = new Stat();
+            St.Show();
+            this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form RC = new Raschet();
+            RC.Show();
+            this.Hide();
         }
     }
 }

@@ -57,6 +57,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "Расчет штрафов и премий";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -69,6 +70,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "Статистика посещаемости сотрудников";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // MainMenu
             // 
@@ -82,6 +84,7 @@
             this.Name = "MainMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Учет рабочего времени";
+            this.Load += new System.EventHandler(this.MainMenu_Load);
             this.ResumeLayout(false);
 
         }
