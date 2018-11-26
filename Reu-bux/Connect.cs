@@ -16,6 +16,10 @@ namespace Reu_bux
         private Base_Using _BU;
         private Reg_Info _RI;
 
+        private bool checking = true;
+        private bool get_server_list = true;
+
+
         public Connect()
         {
             InitializeComponent();
@@ -26,16 +30,16 @@ namespace Reu_bux
             switch (toolStripButton1.Text)
             {
                 case "Вход в систему":
-                    toolStripLabel1.Visible = true;
+                    toolStripLabel2.Visible = true;
                     toolStripTextBox1.Visible = true;
-                    toolStripButton3.Visible = true;
+                    toolStripButton2.Visible = true;
                     toolStripTextBox1.Clear();
                     toolStripButton1.Text = "Закрыть авторизацию";
                     break;
                 case "Закрыть авторизацию":
-                    toolStripLabel1.Visible = false;
+                    toolStripLabel2.Visible = false;
                     toolStripTextBox1.Visible = false;
-                    toolStripButton3.Visible = false;
+                    toolStripButton2.Visible = false;
                     toolStripButton1.Text = "Вход в систему";
                     break;
             }
@@ -73,54 +77,11 @@ namespace Reu_bux
                     case (false):
                         _BU = new Base_Using();
                         _BU.Autentification(toolStripTextBox1.Text);
-                        menuStrip1.Visible = Program.Value;
-                      //  priceListToolStripMenuItem.Visible = true;
-                        switch (toolStripButton3.Text)
+                        if (Program.authorized == true)
                         {
-                            case ("Авторизоваться"):
-                                toolStripLabel1.Visible = false;
-                                toolStripTextBox1.Visible = false;
-                                toolStripButton3.Text = "Сменить пользователя";
-                                switch (Program.MACCSS)
-                                {
-                                    case (0):
-                                        корректировкаРабочегоВремениToolStripMenuItem.Visible = false;
-                                        break;
-                                    case (1):
-                                        корректировкаРабочегоВремениToolStripMenuItem.Visible = true;
-                                        break;
-                                }
-                                switch (Program.SACCSS)
-                                {
-                                    case (0):
-                                        расчетШтрафовИПремийToolStripMenuItem.Visible = false;
-                                        break;
-                                    case (1):
-                                        расчетШтрафовИПремийToolStripMenuItem.Visible = true;
-                                        break;
-                                }
-                                switch (Program.TNSACCSS)
-                                {
-                                    case (0):
-                                        статистикаToolStripMenuItem.Visible = false;
-                                        break;
-                                    case (1):
-                                        статистикаToolStripMenuItem.Visible = true;
-                                        break;
-                                }
-                                break;
-                            case ("Сменить пользователя"):
-                                toolStripLabel1.Visible = true;
-                                toolStripTextBox1.Visible = true;
-                                toolStripTextBox1.Clear();
-                                toolStripButton3.Text = "Авторизоваться";
-                                menuStrip1.Visible = false;
-                                Program.MACCSS = 0;
-                                Program.SACCSS = 0;
-                                Program.SYACCSS = 0;
-                                Program.TNSACCSS = 0;
-                                Program.UID = 0;
-                                break;
+                            Form MM = new MainMenu();
+                            MM.Show();
+                            this.Hide();
                         }
                         toolStripTextBox1.BackColor = Color.White;
                         break;
@@ -155,6 +116,91 @@ namespace Reu_bux
                 comboBox2.DisplayMember = "name";
                 comboBox2.Enabled = true;
                 button2.Enabled = true;
+            };
+            Invoke(Act);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            DateTime Day = DateTime.Today;
+            DateTime Time = DateTime.Now;
+            toolStripStatusLabel1.Text = "Сегодня: " + Day.ToString("yyyy-MM-dd");
+            toolStripStatusLabel2.Text = "Время: " + Time.ToString("hh:mm:ss");
+            switch (checking)
+            {
+                case (true):
+                    if (toolStripStatusLabel3.Text.Length > 23)
+                    {
+                        toolStripStatusLabel3.Text = "Проверка подключения";
+                    }
+                    else
+                    {
+                        toolStripStatusLabel3.Text = toolStripStatusLabel3.Text + ".";
+                    }
+                    break;
+            }
+            switch (get_server_list)
+            {
+                case (true):
+                    if (toolStripStatusLabel3.Text.Length > 27)
+                    {
+                        toolStripStatusLabel3.Text = "Получение списка серверов";
+                    }
+                    else
+                    {
+                        toolStripStatusLabel3.Text = toolStripStatusLabel3.Text + ".";
+                    }
+                    break;
+            }
+        }
+
+        private void Connect_Load(object sender, EventArgs e)
+        {
+            _BU = new Base_Using();
+            _BU.Status += _BU_Status;
+            toolStripStatusLabel3.Text = "Проверка подключения";
+            Thread Th1 = new Thread(_BU.Connection_State);
+            Th1.Start();
+        }
+
+        public void _BU_Status(bool value)
+        {
+            Action Act = () =>
+            {
+                checking = false;
+                switch (value)
+                {
+                    case (true):
+                        get_server_list = false;
+                        toolStripStatusLabel3.Text = "Подключение установлено!";
+                        toolStripButton1.Enabled = true;
+                        break;
+                    case (false):
+                        toolStripStatusLabel3.Text = "Отсутствует подключение!";
+                        panel1.Visible = true;
+                        _BU = new Base_Using();
+                        _BU.List_Server += _BU_List_Server;
+                        Thread Th1 = new Thread(_BU.Get_Server_List);
+                        Th1.Start();
+                        break;
+                }
+            };
+            Invoke(Act);
+        }
+
+        public void _BU_List_Server(DataTable value)
+        {
+            Action Act = () =>
+            {
+                get_server_list = false;
+                foreach (DataRow Row in value.Rows)
+                {
+                    comboBox1.Items.Add(Row[0] + "\\" + Row[1]);
+                }
+                comboBox1.Enabled = true;
+                textBox1.Enabled = true;
+                textBox2.Enabled = true;
+                toolStripStatusLabel3.Text = "Список серверов получен.";
             };
             Invoke(Act);
         }

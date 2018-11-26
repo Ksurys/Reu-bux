@@ -21,7 +21,7 @@ namespace Reu_bux
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainMenu());
+            Application.Run(new Connect());
         }
         public static DataTable Tovar_Select;
         public static DataTable Tip_Tovar_Select;
@@ -38,6 +38,7 @@ namespace Reu_bux
         public static int SACCSS;
         public static int TNSACCSS;
         public static bool Value;
+        public static bool authorized = false;
         public static DataTable Tov_Na_Sklad_filter;
         public static DataTable _Sost_Check_Select;
         public static string _FIO;

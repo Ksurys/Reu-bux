@@ -404,9 +404,8 @@ namespace Reu_bux
         public event Action<bool> Status;
         public event Action<DataTable> List_Server;
         public event Action<DataSet> List_Dbs;
-        private string us_id_qr = "select [dbo].[personal_list].[id_personal_list] from[dbo].[personal_list] " +
-                                  "inner join [dbo].[role_list] on [dbo].[personal_list].[role_list_id]=[dbo]." +
-                                  "[role_list].[id_role_list] where [personal_list].[password_personal] = '";
+        private string us_id_qr = "select [dbo].[Pols].[id_Pols] from [dbo].[Pols] " +
+                                  "where [Pols].[password_Pols] = '";
         private string sy_access = "select [dbo].[personal_list].[system_access] from[dbo].[personal_list] " +
                                   "inner join[dbo].[role_list] on[dbo].[personal_list].[role_list_id]=[dbo]." +
                                   "[role_list].[id_role_list] where[personal_list].[id_personal_list] = ";
@@ -470,7 +469,6 @@ namespace Reu_bux
                 _RI = new Reg_Info();
                 _RI.Set_Connection();
                 _CmdSql = new SqlCommand(us_id_qr + us_pas + "'", _RI.Connection);
-                MessageBox.Show(_CmdSql.CommandText.ToString());
                 _RI.Connection.Open();
                 Program.UID = Convert.ToInt32(_CmdSql.ExecuteScalar().ToString());
                 switch (Program.UID)
@@ -478,39 +476,42 @@ namespace Reu_bux
                     case (0):
                         MessageBox.Show("Вас нет в системе! Повторите ввод пароля!");
                         break;
-                    default:
-                        _RI = new Reg_Info();
-                        _CmdSql = new SqlCommand(sy_access + Program.UID, _RI.Connection);
-                        _RI.Set_Connection();
-                        _RI.Connection.Open();
-                        Program.SYACCSS = Convert.ToInt32(_CmdSql.ExecuteScalar().ToString());
-                        switch (Program.SYACCSS)
-                        {
-                            case (0):
-                                MessageBox.Show("У вас нет прав доступа к системе!");
-                                break;
-                            case (1):
-                                _RI = new Reg_Info();
-                                _RI.Set_Connection();
-                                _RI.Connection.Open();
-                                SqlCommand SAccssCmd = new SqlCommand(sl_access + Program.UID, _RI.Connection);
-                                SqlCommand TNSAccssCmd = new SqlCommand(tv_skld_access + Program.UID, _RI.Connection);
-                                SqlCommand MAccssCmd = new SqlCommand(m_access + Program.UID, _RI.Connection);
-                                Program.SACCSS = Convert.ToInt32(SAccssCmd.ExecuteScalar().ToString());
-                                Program.TNSACCSS = Convert.ToInt32(TNSAccssCmd.ExecuteScalar().ToString());
-                                Program.MACCSS = Convert.ToInt32(MAccssCmd.ExecuteScalar().ToString());
-                                Program.Value = true;
-                                _RI.Connection.Close();
-                                break;
-                        }
-                        _RI.Connection.Close();
+                    case (1):
+                        Program.authorized = true;
                         break;
+                    //default:
+                    //    _RI = new Reg_Info();
+                    //    _CmdSql = new SqlCommand(sy_access + Program.UID, _RI.Connection);
+                    //    _RI.Set_Connection();
+                    //    _RI.Connection.Open();
+                    //    Program.SYACCSS = Convert.ToInt32(_CmdSql.ExecuteScalar().ToString());
+                    //    switch (Program.SYACCSS)
+                    //    {
+                    //        case (0):
+                    //            MessageBox.Show("У вас нет прав доступа к системе!");
+                    //            break;
+                    //        case (1):
+                    //            _RI = new Reg_Info();
+                    //            _RI.Set_Connection();
+                    //            _RI.Connection.Open();
+                    //            SqlCommand SAccssCmd = new SqlCommand(sl_access + Program.UID, _RI.Connection);
+                    //            SqlCommand TNSAccssCmd = new SqlCommand(tv_skld_access + Program.UID, _RI.Connection);
+                    //            SqlCommand MAccssCmd = new SqlCommand(m_access + Program.UID, _RI.Connection);
+                    //            Program.SACCSS = Convert.ToInt32(SAccssCmd.ExecuteScalar().ToString());
+                    //            Program.TNSACCSS = Convert.ToInt32(TNSAccssCmd.ExecuteScalar().ToString());
+                    //            Program.MACCSS = Convert.ToInt32(MAccssCmd.ExecuteScalar().ToString());
+                    //            Program.Value = true;
+                    //            _RI.Connection.Close();
+                    //            break;
+                    //    }
+                    //    _RI.Connection.Close();
+                    //    break;
                 }
                 _RI.Connection.Close();
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Пользователь не найден!");
             }
         }
         public string sost_check = "select [id_check_sost], [check_data_id], [tovar_na_sklade_id], [naim_tovar], [cena_tovara], [kol_vo_tov_v_checke], " +
