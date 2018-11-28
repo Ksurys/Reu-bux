@@ -15,6 +15,10 @@ namespace Reu_bux
         public MainMenu()
         {
             InitializeComponent();
+            if (Program.ADMINACCESS == true)
+            {
+                button1.Visible = true;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,6 +44,13 @@ namespace Reu_bux
         {
             Form RC = new Raschet();
             RC.Show();
+            this.Hide();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form AD = new Adm();
+            AD.Show();
             this.Hide();
         }
     }

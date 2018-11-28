@@ -81,6 +81,7 @@
             this.Name = "Stat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Статистика отработанного времени сотрудников";
+            this.Load += new System.EventHandler(this.Stat_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

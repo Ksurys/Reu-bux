@@ -68,6 +68,7 @@ namespace Reu_bux
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+            //Program.SYSACCESS = Convert.ToInt32(_CmdSql.ExecuteScalar().ToString());
             {
                 switch (toolStripTextBox1.Text == "")
                 {
@@ -76,17 +77,46 @@ namespace Reu_bux
                         break;
                     case (false):
                         _BU = new Base_Using();
-                        _BU.Autentification(toolStripTextBox1.Text);
-                        if (Program.authorized == true)
+                        _BU.Autorization(toolStripTextBox1.Text);
+                        if (Program.AUTH == 1)
                         {
                             Form MM = new MainMenu();
                             MM.Show();
                             this.Hide();
                         }
+                        else
+                        {
+                            MessageBox.Show("Пользователь не найден");
+                        }
                         toolStripTextBox1.BackColor = Color.White;
                         break;
                 }
             }
+//ПРОБОВАЛА РАЗГРАНИЧЕНИЕ
+
+            //_RI.Set_Connection(); //Установка соединения с базой
+            //_RI.Connection.Open();
+            //switch (Program.SYSACCESS) //Проверка значения из переменной SYSACCESS в классе Program
+            //{
+                                  
+            //    case 0:
+            //        _RI.Connection.Close();
+            //        Program.ADMINACCESS = false;
+            //        //Program.BACKTOADMIN = true;
+            //        MainMenu MM = new MainMenu();
+            //        MM.Show();
+            //        this.Close();
+            //        break;
+            //    case 1:
+            //        _RI.Connection.Close();
+            //        Program.ADMINACCESS = true;
+            //        //Program.BACKTOADMIN = true;
+            //        MainMenu MN = new MainMenu();
+            //        MN.Show();
+            //        this.Close();
+            //        break;
+
+            //}
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -195,7 +225,7 @@ namespace Reu_bux
                 get_server_list = false;
                 foreach (DataRow Row in value.Rows)
                 {
-                    comboBox1.Items.Add(Row[0] + "\\" + Row[1]);
+                   comboBox1.Items.Add(Row[0] + "\\" + Row[1]);
                 }
                 comboBox1.Enabled = true;
                 textBox1.Enabled = true;

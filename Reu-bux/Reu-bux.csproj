@@ -78,6 +78,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Adm.Designer.cs">
+      <DependentUpon>Adm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base_Using.cs" />
     <Compile Include="Connect.cs">
       <SubType>Form</SubType>
@@ -112,6 +118,9 @@
     <Compile Include="Stat.Designer.cs">
       <DependentUpon>Stat.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Adm.resx">
+      <DependentUpon>Adm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Connect.resx">
       <DependentUpon>Connect.cs</DependentUpon>
     </EmbeddedResource>

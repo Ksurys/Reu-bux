@@ -23,5 +23,10 @@ namespace Reu_bux
             MM.Show();
             this.Hide();
         }
+
+        private void Stat_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
